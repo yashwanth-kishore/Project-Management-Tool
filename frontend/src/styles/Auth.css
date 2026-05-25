@@ -1,0 +1,212 @@
+/* Auth Pages Premium Styling */
+
+.auth-page {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Background shapes removed for clean look */
+
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 10;
+  padding: 20px;
+}
+
+.auth-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+[data-theme="dark"] .auth-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo box removed from JSX */
+.auth-logo-wrapper {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-left: 4px;
+}
+
+.auth-input-wrapper {
+  position: relative;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  transition: color 0.3s ease;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 16px 12px 48px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  font-size: 15px;
+  color: var(--color-text);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+[data-theme="dark"] .auth-input {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-input:focus {
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+[data-theme="dark"] .auth-input:focus {
+  background: #0f172a;
+}
+
+.auth-input:focus + .auth-input-icon {
+  color: var(--color-primary);
+}
+
+.auth-submit-btn {
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: var(--color-primary-hover);
+  box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.4);
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: 32px;
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .auth-footer {
+  border-top-color: rgba(255, 255, 255, 0.05);
+}
+
+.auth-footer-text {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.auth-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-left: 4px;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: none;
+}
+
+.auth-error {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+[data-theme="dark"] .auth-error {
+  background: rgba(127, 29, 29, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
