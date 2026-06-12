@@ -60,6 +60,47 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/inbox", inboxRoutes);
 
+// Debug route for Render deployment troubleshooting
+app.get("/api/debug", async (req, res) => {
+  try {
+    const diagnostics = {
+      databaseUrlDefined: !!process.env.DATABASE_URL,
+      jwtSecretDefined: !!process.env.JWT_SECRET,
+      envKeys: Object.keys(process.env).filter(k => 
+        !k.toLowerCase().includes("pass") && 
+        !k.toLowerCase().includes("secret") && 
+        !k.toLowerCase().includes("key") &&
+        !k.toLowerCase().includes("url")
+      ),
+    };
+
+    if (process.env.DATABASE_URL) {
+      try {
+        const dbRes = await pool.query("SELECT NOW()");
+        diagnostics.dbConnection = "SUCCESS";
+        diagnostics.dbTime = dbRes.rows[0].now;
+
+        // Check tables
+        const tablesRes = await pool.query(`
+          SELECT table_name 
+          FROM information_schema.tables 
+          WHERE table_schema = 'public' AND table_type = 'BASE TABLE';
+        `);
+        diagnostics.tables = tablesRes.rows.map(r => r.table_name);
+      } catch (dbErr) {
+        diagnostics.dbConnection = "FAILED";
+        diagnostics.dbError = dbErr.message;
+      }
+    } else {
+      diagnostics.dbConnection = "NOT_CONFIGURED";
+    }
+
+    res.json(diagnostics);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Root route
 app.get("/", (req, res) => {
   res.send("PM Tool API running successfully 🚀");
