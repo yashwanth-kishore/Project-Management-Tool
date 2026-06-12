@@ -63,8 +63,20 @@ app.use("/api/inbox", inboxRoutes);
 // Debug route for Render deployment troubleshooting
 app.get("/api/debug", async (req, res) => {
   try {
+    let databaseUrlPrefix = "";
+    if (process.env.DATABASE_URL) {
+      try {
+        const parsedUrl = new URL(process.env.DATABASE_URL);
+        databaseUrlPrefix = `${parsedUrl.protocol}//${parsedUrl.hostname}:${parsedUrl.port || "default"}${parsedUrl.pathname}`;
+      } catch (err) {
+        databaseUrlPrefix = `PARSE_ERROR: ${err.message}`;
+      }
+    }
+
     const diagnostics = {
       databaseUrlDefined: !!process.env.DATABASE_URL,
+      databaseUrlLength: process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0,
+      databaseUrlPrefix,
       jwtSecretDefined: !!process.env.JWT_SECRET,
       envKeys: Object.keys(process.env).filter(k => 
         !k.toLowerCase().includes("pass") && 
@@ -90,6 +102,8 @@ app.get("/api/debug", async (req, res) => {
       } catch (dbErr) {
         diagnostics.dbConnection = "FAILED";
         diagnostics.dbError = dbErr.message;
+        diagnostics.dbErrorName = dbErr.name;
+        diagnostics.dbErrorStack = dbErr.stack;
       }
     } else {
       diagnostics.dbConnection = "NOT_CONFIGURED";
