@@ -1,5 +1,7 @@
 const path = require("path");
+const fs = require("fs");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+const pool = require("./db");
 
 
 const express = require("express");
@@ -63,8 +65,26 @@ app.get("/", (req, res) => {
   res.send("PM Tool API running successfully 🚀");
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Automatically initialize database schema at startup
+async function initDb() {
+  try {
+    const schemaPath = path.resolve(__dirname, "schema.sql");
+    if (fs.existsSync(schemaPath)) {
+      const sql = fs.readFileSync(schemaPath, "utf8");
+      await pool.query(sql);
+      console.log("✅ Database schema auto-initialized successfully!");
+    } else {
+      console.warn("⚠️ schema.sql not found, skipping DB auto-initialization");
+    }
+  } catch (err) {
+    console.error("❌ Database schema auto-initialization failed:", err.message);
+  }
+}
+
+initDb().then(() => {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
+
